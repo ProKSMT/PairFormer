@@ -1,5 +1,5 @@
 /**
- * Pairender Website - Main JavaScript
+ * PairFormer Website - Main JavaScript
  */
 
 // ============================================
@@ -91,7 +91,7 @@ function fallbackCopy(text, onSuccess) {
 // Fade-in Animation on Scroll
 // ============================================
 function fadeInOnScroll() {
-    const elements = document.querySelectorAll('.feature-card, .stat-card, .annotation-card, .scene-type-card, .finding-card, .download-card, .video-container, .pipeline-step, .table-wrapper');
+    const elements = document.querySelectorAll('.feature-card, .stat-card, .annotation-card, .scene-type-card, .finding-card, .download-card, .visualization-teaser, .demo-gif-container, .architecture-figure, .architecture-caption, .comparison-column, .video-container, .pipeline-step, .table-wrapper');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initVizIframe();
 
-    console.log('Pairender website loaded successfully!');
+    console.log('PairFormer website loaded successfully!');
 });
 
 // ============================================

@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pairender: Matching Every Pair to Track Every Point: PairFormer for All-Pairs Tracking and Video Trajectory Fields">
-    <meta name="keywords" content="All-Pairs Tracking, Video Trajectory Fields, Point Tracking, Dataset, Synthetic Data, Computer Vision">
+    <meta name="description" content="PairFormer: Matching Every Pair to Track Every Point for All-Pairs Tracking and Video Trajectory Fields">
+    <meta name="keywords" content="PairFormer, All-Pairs Tracking, Video Trajectory Fields, Point Tracking, Computer Vision">
     <meta name="author" content="Guangyang Wu, Youran Ding, Xinyu Che, Benyuan Sun, Yi Yang, Xiaohong Liu">
 
     <!-- Open Graph Protocol -->
-    <meta property="og:title" content="Pairender: Matching Every Pair to Track Every Point">
-    <meta property="og:description" content="PAIRender is a scalable Blender-based platform that generates photorealistic dynamic videos with per-pixel ground truth tailored to All-Pairs Tracking.">
+    <meta property="og:title" content="PairFormer: Matching Every Pair to Track Every Point">
+    <meta property="og:description" content="PairFormer is a feed-forward transformer for All-Pairs Tracking and dense video trajectory fields.">
     <meta property="og:type" content="website">
 
-    <title>Pairender: PairFormer for All-Pairs Tracking</title>
+    <title>PairFormer: All-Pairs Tracking</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
     <nav id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h1>Pairender</h1>
+                <h1>PairFormer</h1>
             </div>
             <button class="mobile-menu-btn" aria-label="Toggle menu" onclick="toggleMobileMenu()">
                 <span></span>
@@ -36,7 +36,6 @@
             </button>
             <div class="nav-links" id="nav-links">
                 <a href="assets/PairFormer_CVPR26.pdf" class="nav-link" target="_blank">Paper</a>
-                <a href="https://huggingface.co/ProKSMT" class="nav-link" target="_blank">Dataset</a>
                 <a href="#citation" class="nav-link">BibTeX</a>
             </div>
         </div>
@@ -69,13 +68,6 @@
                     </svg>
                     Paper
                 </a>
-                <a href="https://huggingface.co/ProKSMT" class="btn btn-secondary" target="_blank">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                    Dataset
-                </a>
                 <a href="#citation" class="btn btn-secondary">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
@@ -92,11 +84,11 @@
         <div class="container">
             <h2 class="section-title">Visualization Results</h2>
             <div class="demo-section">
-                <div class="demo-video-container">
-                    <video controls autoplay muted loop playsinline>
-                        <source src="assets/videos/vis.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                <div class="visualization-teaser">
+                    <img src="assets/images/teaser.png" alt="PairFormer teaser visualization" loading="lazy">
+                </div>
+                <div class="demo-gif-container">
+                    <img src="assets/videos/pairformer_track_sequence.gif" alt="PairFormer tracking visualization sequence" loading="lazy">
                 </div>
             </div>
         </div>
@@ -107,85 +99,263 @@
         <div class="container">
             <h2 class="section-title">Abstract</h2>
             <div class="abstract-content">
-                <p>Data-driven modeling of dynamic scenes is limited by the lack of large-scale datasets that provide dense, reliable, and long-range supervision. Existing synthetic corpora are modest in scale and biased toward rigid or short-term motion, with sparse annotations that are insufficient for learning all-pairs correspondence at the sequence level. To address this, we develop <strong>PAIRender</strong>, a scalable Blender-based platform that generates photorealistic dynamic videos with per-pixel ground truth tailored to All-Pairs Tracking.</p>
+                <p>Tracking-any-point (TAP) answers query-conditioned correspondence but leaves the dense, all-pairs structure of a video implicit. We formulate All-Pairs Tracking (APT): given a video, predict dense displacement and visibility for every source-target frame pair, from which per-pixel trajectories can be read out. To this end, we propose PairFormer, a feed-forward transformer that addresses APT in a single pass. A spatio-temporal patch encoder computes temporally conditioned features for all frames. CorrBank constructs a learnable correlation memory for each frame pair to obtain pairwise motion tokens. A broadcast motion mixer aggregates information across space and time and refines these tokens with global context. A trajectory head then predicts full-resolution displacement for each pair, yielding a coherent all-pairs trajectory field. To support APT at scale, we develop PAIRender, a data platform that synthesizes photo-realistic dynamic scenes with dense annotations. From PAIRender we derive a training set (&pi;-R10K) and a benchmark (APT-Bench) with an all-to-all evaluation protocol. Experiments show that PairFormer achieves strong performance on APT-Bench and competitive results on standard TAP benchmarks. Code and dataset will be released upon publication.</p>
             </div>
         </div>
     </section>
 
-    <!-- Dataset Overview -->
-    <section id="dataset">
+    <!-- Architecture -->
+    <section id="architecture">
         <div class="container">
-            <h2 class="section-title">Dataset Overview</h2>
-
-            <!-- Dataset Statistics -->
-            <div class="subsection">
-                <h3 class="subsection-title">Dataset Statistics</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">653K</div>
-                        <div class="stat-label">Frames</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">22K</div>
-                        <div class="stat-label">Sequences</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">3000+</div>
-                        <div class="stat-label">Camera Poses</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">10</div>
-                        <div class="stat-label">Annotations</div>
-                    </div>
+            <h2 class="section-title">Architecture</h2>
+            <div class="architecture-content">
+                <div class="architecture-figure">
+                    <img src="assets/images/main.png" alt="PairFormer architecture" loading="lazy">
+                </div>
+                <div class="architecture-caption">
+                    <p><strong>PairFormer architecture for All-Pairs Tracking (APT).</strong> Given a video, the <strong>Spatio-Temporal Patch Encoder</strong> maps all frames to temporally conditioned patch features on a regular grid. <strong>CorrBank</strong> performs memory-augmented matching to produce <em>pairwise motion tokens</em>. The <strong>Broadcast Motion Mixer</strong> applies trajectory-wise mixing, followed by per-frame and all-frames context aggregation and a broadcast step that conditions each motion token on global context. Finally, the <strong>Trajectory Field Decoder</strong> (Traj-Head) applies a DPT style head to each pair and outputs full-resolution displacement. <em>F<sup>s</sup>&rarr;</em>: denotes displacement field from frame <em>s</em> to all other frames.</p>
                 </div>
             </div>
-
-            <!-- Data Annotations -->
-            <div class="subsection">
-                <h3 class="subsection-title">Data Annotations</h3>
-                <div class="annotations-grid">
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>RGB</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Depth</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Instance Masks</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Camera Poses</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Point Trajectories</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Point Visibility</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Adjacent Forward Flow</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Adjacent Backward Flow</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Long-range Forward Flow</h4></div>
-                    <div class="annotation-card"><span class="annotation-check">&#10003;</span><h4>Long-range Backward Flow</h4></div>
-                </div>
-            </div>
-
-            <!-- Data Samples -->
-            <div class="subsection">
-                <h3 class="subsection-title">Data Samples</h3>
-                <div class="pipeline-content">
-                    <div class="pipeline-image">
-                        <img src="assets/images/samples.png" alt="Pairender Data Samples" loading="lazy">
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- Downloads -->
-    <section id="downloads">
+    <!-- TAP Benchmark Performance -->
+    <section id="tap-benchmark" class="results-section">
         <div class="container">
-            <h2 class="section-title">Downloads & Resources</h2>
-            <div class="downloads-grid">
-                <div class="download-card">
-                    <div class="download-icon">📄</div>
-                    <h3>Paper</h3>
-                    <p>Read the full paper with detailed methodology and experiments</p>
-                    <a href="assets/PairFormer_CVPR26.pdf" class="btn btn-primary" target="_blank">Download PDF</a>
+            <h2 class="section-title">TAP Benchmark Performance</h2>
+            <div class="benchmark-caption">
+                <p>We report results on public point-tracking datasets spanning varied domains: <em>BADJA</em> (animals), <em>CroHD</em> (surveillance), <em>TAPVid-DAVIS</em> (YouTube-like), <em>DriveTrack</em> (driving), <em>EgoPoints</em> (egocentric), <em>TAPVid-Kinetics</em> (YouTube), <em>RGB-Stacking</em> (robotic manipulation), and <em>RoboTAP</em> (robotics).</p>
+                <p>For long videos we cap the length to at most 600 frames for tractability, and follow the official TAP-Vid protocol for sampling query trajectories and visibility labels.</p>
+            </div>
+            <div class="benchmark-table-scroll">
+                <table class="benchmark-table results-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Bad</th>
+                            <th>Cro</th>
+                            <th>Dav</th>
+                            <th>Dri</th>
+                            <th>Ego</th>
+                            <th>Kin</th>
+                            <th>RGB</th>
+                            <th>Rob</th>
+                            <th>Avg.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RAFT</td><td>23.7</td><td>29.3</td><td>48.5</td><td>44.8</td><td>41.0</td><td>64.3</td><td>82.8</td><td>72.2</td><td>50.8</td></tr>
+                        <tr><td>SEA-RAFT</td><td>23.9</td><td>21.9</td><td>48.7</td><td>49.4</td><td>44.0</td><td>64.3</td><td>85.7</td><td>67.6</td><td>50.7</td></tr>
+                        <tr><td>AccFlow</td><td>10.3</td><td>22.2</td><td>23.5</td><td>26.4</td><td>4.0</td><td>38.8</td><td>63.2</td><td>57.9</td><td>30.8</td></tr>
+                        <tr><td>PIPs++</td><td>34.1</td><td>27.5</td><td>62.5</td><td>51.3</td><td>38.5</td><td>64.2</td><td>70.4</td><td>73.4</td><td>52.7</td></tr>
+                        <tr><td>LocoTrack</td><td>41.4</td><td>43.1</td><td>68.0</td><td>66.5</td><td>58.4</td><td>70.0</td><td>80.3</td><td>76.9</td><td>63.1</td></tr>
+                        <tr><td>BootsTAPIR</td><td>42.7</td><td>34.9</td><td>67.9</td><td>66.9</td><td>56.8</td><td>70.6</td><td>81.0</td><td>78.2</td><td>62.4</td></tr>
+                        <tr><td>DELTA</td><td>44.6</td><td>42.9</td><td>75.3</td><td><span class="table-underline">67.8</span></td><td>40.3</td><td>66.5</td><td>83.0</td><td>74.8</td><td>61.9</td></tr>
+                        <tr><td>CoTracker2</td><td>40.0</td><td>31.7</td><td>70.9</td><td><span class="table-underline">67.8</span></td><td>43.2</td><td>65.8</td><td>73.4</td><td>73.0</td><td>58.2</td></tr>
+                        <tr><td>CoTracker3</td><td><span class="table-underline">48.3</span></td><td><strong>44.5</strong></td><td><strong>77.1</strong></td><td><strong>69.8</strong></td><td><span class="table-underline">60.4</span></td><td><span class="table-underline">71.8</span></td><td><span class="table-underline">84.2</span></td><td><span class="table-underline">81.6</span></td><td><span class="table-underline">67.2</span></td></tr>
+                        <tr class="highlight-row"><td><strong>PairFormer</strong></td><td><strong>49.7</strong></td><td><span class="table-underline">44.1</span></td><td><span class="table-underline">75.8</span></td><td>66.9</td><td><strong>63.2</strong></td><td><strong>72.1</strong></td><td><strong>89.1</strong></td><td><strong>83.8</strong></td><td><strong>68.1</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- APT Benchmark Performance -->
+    <section id="apt-benchmark" class="results-section">
+        <div class="container">
+            <h2 class="section-title">APT Benchmark Performance</h2>
+            <div class="benchmark-caption">
+                <p>For evaluating APT, we utilize three datasets with dense pairwise annotations: <em>CVO</em>, <em>CVO-Extended</em>, and <em>APT-Bench</em>. The dense scenario can be formulated as densely sampled query points and their corresponding trajectories, thus enabling the direct adoption of metrics designed for TAP-style benchmarks.</p>
+            </div>
+            <div class="benchmark-table-scroll">
+                <table class="benchmark-table results-table apt-results-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colspan="5">CVO</th>
+                            <th colspan="6">CVO-Ext</th>
+                            <th colspan="6">APT-Bench</th>
+                        </tr>
+                        <tr>
+                            <th>Method</th>
+                            <th>&delta;<sub>avg</sub> &uarr;</th>
+                            <th>EPE &darr;</th>
+                            <th>AJ &uarr;</th>
+                            <th>&Delta;<sub>1</sub><sup>epe</sup> &darr;</th>
+                            <th>&Delta;<sub>5</sub><sup>epe</sup> &darr;</th>
+                            <th>&delta;<sub>avg</sub> &uarr;</th>
+                            <th>EPE &darr;</th>
+                            <th>AJ &uarr;</th>
+                            <th>&Delta;<sub>1</sub><sup>epe</sup> &darr;</th>
+                            <th>&Delta;<sub>5</sub><sup>epe</sup> &darr;</th>
+                            <th>&Delta;<sub>25</sub><sup>epe</sup> &darr;</th>
+                            <th>&delta;<sub>avg</sub> &uarr;</th>
+                            <th>EPE &darr;</th>
+                            <th>AJ &uarr;</th>
+                            <th>&Delta;<sub>1</sub><sup>epe</sup> &darr;</th>
+                            <th>&Delta;<sub>5</sub><sup>epe</sup> &darr;</th>
+                            <th>&Delta;<sub>25</sub><sup>epe</sup> &darr;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CoTracker3_Offline</td>
+                            <td>78.9</td><td>1.53</td><td>75.5</td><td>1.23</td><td>1.63</td>
+                            <td>71.5</td><td>5.30</td><td>70.4</td><td>3.66</td><td>5.59</td><td>8.95</td>
+                            <td>75.2</td><td>4.25</td><td>72.5</td><td>2.47</td><td>4.18</td><td>6.48</td>
+                        </tr>
+                        <tr>
+                            <td>CoTracker3_Online</td>
+                            <td>77.2</td><td>1.55</td><td>74.3</td><td>1.27</td><td>1.71</td>
+                            <td>70.8</td><td>5.35</td><td>69.2</td><td>3.79</td><td>5.82</td><td>9.21</td>
+                            <td>73.9</td><td>4.31</td><td>73.2</td><td>2.59</td><td>4.32</td><td>6.73</td>
+                        </tr>
+                        <tr>
+                            <td>DOT</td>
+                            <td><span class="table-underline">81.2</span></td><td><span class="table-underline">1.40</span></td><td><span class="table-underline">79.8</span></td><td><span class="table-underline">1.12</span></td><td><span class="table-underline">1.39</span></td>
+                            <td><span class="table-underline">72.7</span></td><td><span class="table-underline">5.28</span></td><td><span class="table-underline">70.8</span></td><td><span class="table-underline">3.52</span></td><td><span class="table-underline">5.38</span></td><td><span class="table-underline">8.77</span></td>
+                            <td><span class="table-underline">76.7</span></td><td><span class="table-underline">3.68</span></td><td><span class="table-underline">75.4</span></td><td><span class="table-underline">2.18</span></td><td><span class="table-underline">3.69</span></td><td><span class="table-underline">6.02</span></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>PairFormer</strong></td>
+                            <td><strong>81.8</strong></td><td><strong>1.32</strong></td><td><strong>80.3</strong></td><td><strong>1.04</strong></td><td><strong>1.31</strong></td>
+                            <td><strong>73.2</strong></td><td><strong>5.13</strong></td><td><strong>71.2</strong></td><td><strong>3.34</strong></td><td><strong>5.09</strong></td><td><strong>8.26</strong></td>
+                            <td><strong>77.5</strong></td><td><strong>3.26</strong></td><td><strong>76.3</strong></td><td><strong>2.03</strong></td><td><strong>3.21</strong></td><td><strong>5.39</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Computational Efficiency -->
+    <section id="efficiency" class="results-section">
+        <div class="container">
+            <h2 class="section-title">Computational Efficiency</h2>
+            <div class="benchmark-caption">
+                <p>We benchmark average per-frame-pair inference time on the APT task on the first 10 frames of APT-Bench at 512&times;512 resolution, batch size = 1, FP16 on a single NVIDIA A100-40G GPU.</p>
+                <p>Sparse TAP trackers (TAPIR/CoTracker3) are <em>densified</em> with the same protocol as in the main paper so they produce an all-pairs field; timings <em>include</em> this densification. Two-frame flow models (RAFT) run per pair directly. PairFormer produces dense all-pairs outputs in one pass, avoiding multi-hop propagation.</p>
+            </div>
+            <div class="benchmark-table-scroll efficiency-table-wrap">
+                <table class="benchmark-table results-table efficiency-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Time (s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RAFT</td><td>0.11</td></tr>
+                        <tr><td>AccFlow</td><td>0.13</td></tr>
+                        <tr><td>TAPIR</td><td>9.27</td></tr>
+                        <tr><td>CoTracker3_Offline</td><td>6.13</td></tr>
+                        <tr><td>DOT (N=2048)</td><td>0.27</td></tr>
+                        <tr><td>DOT (N=4096)</td><td>0.55</td></tr>
+                        <tr class="highlight-row"><td><strong>PairFormer (ours)</strong></td><td><strong>0.11</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Qualitative Comparison -->
+    <section id="qualitative">
+        <div class="container">
+            <h2 class="section-title">Qualitative Comparison</h2>
+
+            <div class="subsection qualitative-subsection">
+                <h3 class="subsection-title">Flow</h3>
+                <div class="comparison-columns">
+                    <div class="comparison-column">
+                        <h4>PairFormer</h4>
+                        <div class="comparison-stack">
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/pairformer_bidense_human00005_view2.gif" alt="PairFormer flow result on example 1" loading="lazy">
+                                <figcaption>Example 1</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/pairformer_bidense_human00027_view2.gif" alt="PairFormer flow result on example 2" loading="lazy">
+                                <figcaption>Example 2</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/pairformer_bidense_human00034_view0.gif" alt="PairFormer flow result on example 3" loading="lazy">
+                                <figcaption>Example 3</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/pairformer_bidense_human20009_view0.gif" alt="PairFormer flow result on example 4" loading="lazy">
+                                <figcaption>Example 4</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="comparison-column">
+                        <h4>CoTracker3</h4>
+                        <div class="comparison-stack">
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/cotracker3_bidense_human00005_view2.gif" alt="CoTracker3 flow result on example 1" loading="lazy">
+                                <figcaption>Example 1</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/cotracker3_bidense_human00027_view2.gif" alt="CoTracker3 flow result on example 2" loading="lazy">
+                                <figcaption>Example 2</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/cotracker3_bidense_human00034_view0.gif" alt="CoTracker3 flow result on example 3" loading="lazy">
+                                <figcaption>Example 3</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/flow/cotracker3_bidense_human20009_view0.gif" alt="CoTracker3 flow result on example 4" loading="lazy">
+                                <figcaption>Example 4</figcaption>
+                            </figure>
+                        </div>
+                    </div>
                 </div>
-                <div class="download-card">
-                    <div class="download-icon">💾</div>
-                    <h3>Dataset</h3>
-                    <p>Access the complete Pairender dataset with annotations</p>
-                    <a href="https://huggingface.co/ProKSMT" class="btn btn-secondary" target="_blank">View on Hugging Face</a>
+            </div>
+
+            <div class="subsection qualitative-subsection">
+                <h3 class="subsection-title">Track</h3>
+                <div class="comparison-columns">
+                    <div class="comparison-column">
+                        <h4>PairFormer</h4>
+                        <div class="comparison-stack">
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/pairformer_bidense_human00005_view2.gif" alt="PairFormer track result on example 1" loading="lazy">
+                                <figcaption>Example 1</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/pairformer_bidense_human00027_view2.gif" alt="PairFormer track result on example 2" loading="lazy">
+                                <figcaption>Example 2</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/pairformer_bidense_human00034_view0.gif" alt="PairFormer track result on example 3" loading="lazy">
+                                <figcaption>Example 3</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/pairformer_bidense_human20009_view0.gif" alt="PairFormer track result on example 4" loading="lazy">
+                                <figcaption>Example 4</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="comparison-column">
+                        <h4>CoTracker3</h4>
+                        <div class="comparison-stack">
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/cotracker3_bidense_human00005_view2.gif" alt="CoTracker3 track result on example 1" loading="lazy">
+                                <figcaption>Example 1</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/cotracker3_bidense_human00027_view2.gif" alt="CoTracker3 track result on example 2" loading="lazy">
+                                <figcaption>Example 2</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/cotracker3_bidense_human00034_view0.gif" alt="CoTracker3 track result on example 3" loading="lazy">
+                                <figcaption>Example 3</figcaption>
+                            </figure>
+                            <figure class="comparison-item">
+                                <img src="assets/qualitative/track/cotracker3_bidense_human20009_view0.gif" alt="CoTracker3 track result on example 4" loading="lazy">
+                                <figcaption>Example 4</figcaption>
+                            </figure>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -216,7 +386,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 Pairender</p>
+            <p>&copy; 2026 PairFormer</p>
         </div>
     </footer>
 

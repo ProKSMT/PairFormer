@@ -1,5 +1,5 @@
 /* ============================================
-   Pairender Website Styles
+   PairFormer Website Styles
    ============================================ */
 
 /* ============================================
@@ -380,6 +380,22 @@ section:nth-child(even) {
     display: block;
 }
 
+.visualization-teaser {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.visualization-teaser img {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-md);
+}
+
 .demo-links {
     display: flex;
     justify-content: center;
@@ -408,6 +424,46 @@ section:nth-child(even) {
 .abstract-content strong {
     color: var(--primary-indigo);
     font-weight: 600;
+}
+
+/* ============================================
+   Architecture Section
+   ============================================ */
+.architecture-content {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.architecture-figure {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    background: var(--white);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.architecture-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.architecture-caption {
+    max-width: 1000px;
+    margin: 0 auto;
+    color: var(--dark-gray);
+}
+
+.architecture-caption p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.architecture-caption strong {
+    color: var(--dark-gray);
+    font-weight: 700;
 }
 
 /* ============================================
@@ -452,7 +508,7 @@ section:nth-child(even) {
 }
 
 /* ============================================
-   Dataset Statistics
+   Statistic Cards
    ============================================ */
 .stats-grid {
     display: grid;
@@ -860,6 +916,88 @@ section:nth-child(even) {
 }
 
 /* ============================================
+   Results Tables
+   ============================================ */
+.benchmark-caption {
+    max-width: 980px;
+    margin: -1.25rem auto 1.75rem;
+    color: var(--medium-gray);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    text-align: left;
+}
+
+.benchmark-caption p {
+    margin-bottom: 0.8rem;
+}
+
+.benchmark-caption p:last-child {
+    margin-bottom: 0;
+}
+
+.results-section .benchmark-table-scroll {
+    max-width: 100%;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.results-table {
+    min-width: 860px;
+}
+
+.apt-results-table {
+    min-width: 1420px;
+    font-size: 0.8rem;
+}
+
+.efficiency-table-wrap {
+    max-width: 620px;
+}
+
+.efficiency-table {
+    min-width: 0;
+}
+
+.results-table th:first-child,
+.results-table td:first-child {
+    min-width: 170px;
+}
+
+.results-table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    text-align: left;
+}
+
+.results-table thead tr:first-child th:first-child {
+    background: #0f766e;
+}
+
+.results-table thead tr:nth-child(2) th:first-child {
+    background: #ccfbf1;
+    color: var(--dark-gray);
+}
+
+.results-table tbody td:first-child {
+    z-index: 2;
+}
+
+.results-table strong {
+    font-weight: 700;
+    color: var(--dark-gray);
+}
+
+.table-underline {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.18em;
+}
+
+/* ============================================
    Findings
    ============================================ */
 .findings-grid {
@@ -895,7 +1033,7 @@ section:nth-child(even) {
 }
 
 /* ============================================
-   Downloads Section
+   Resource Cards
    ============================================ */
 .downloads-grid {
     display: grid;
@@ -1311,6 +1449,21 @@ footer {
     display: block;
 }
 
+.demo-gif-container {
+    background: var(--dark-gray);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.demo-gif-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .viz-container {
     position: relative;
     background: var(--white);
@@ -1479,6 +1632,66 @@ footer {
 }
 
 /* ============================================
+   Qualitative Comparison
+   ============================================ */
+#qualitative {
+    background: var(--white);
+}
+
+.qualitative-subsection .subsection-title {
+    text-align: center;
+}
+
+.comparison-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
+}
+
+.comparison-column h4 {
+    margin-bottom: 1.25rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #0f766e 0%, #334155 54%, #be123c 100%);
+    color: var(--white);
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.comparison-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.comparison-item {
+    margin: 0;
+}
+
+.comparison-item img,
+.comparison-item video {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.comparison-item figcaption {
+    margin-top: 0.5rem;
+    color: var(--medium-gray);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ============================================
    Responsive Updates for New Sections
    ============================================ */
 @media (max-width: 900px) {
@@ -1492,6 +1705,11 @@ footer {
 
     .demo-section-title {
         font-size: 1.3rem;
+    }
+
+    .comparison-columns {
+        grid-template-columns: 1fr;
+        gap: 3rem;
     }
 }
 
